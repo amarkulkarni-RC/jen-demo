@@ -39,48 +39,10 @@
       <sf:retrieve username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" retrieveTarget="retrieveUnpackagedBUP" unpackaged="src/package.xml"/>
     </target>
 	
-	<target name="deployUnpackagedSachinBUP">
-      <sf:deploy username="${sfBUPSachin.username}" password="${sfBUPSachin.password}" sessionId="${sf.sessionId}" serverurl="${sfBUPSachin.serverurl}" maxPoll="${sf.maxPoll}" deployRoot="retrieveUnpackagedES" rollbackOnError="true"/>
-    </target>
-	
-	<target name="deployUnpackagedAmarBUP">
-      <sf:deploy username="${sfAmar.username}" password="${sfAmar.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" deployRoot="retrieveUnpackagedES" rollbackOnError="true"/>
-    </target>
-	
-	<target name="deployUnpackagedBUP">
-      <sf:deploy username="${sfES.username}" password="${sfES.password}" sessionId="${sf.sessionId}" serverurl="${sfESSachin.serverurl}" maxPoll="${sf.maxPoll}" deployRoot="retrieveUnpackagedBUP" rollbackOnError="true"/>
-    </target>
-	
-	
-	<target name="retrievePackageBUP">
-      <!-- Retrieve the contents into another directory -->
-      <sf:retrieve username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" retrieveTarget="src" packageNames="${sf.pkgName}"/>
-    </target>
-	
-	<target name="retrieveUnpackagedAmar">
-      <mkdir dir="retrieveUnpackagedAmar"/>
-      <!-- Retrieve the contents into another directory -->
-      <sf:retrieve username="${sfAmar.username}" password="${sfAmar.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" retrieveTarget="retrieveUnpackagedAmar" unpackaged="D:\\Projects\\roundCorner\\rc_batch_processing_Amar\\package.xml"/>
-    </target>
-	
-	<target name="retrievePackageAmar">
-      <!-- Retrieve the contents into another directory -->
-      <sf:retrieve username="${sfAmar.username}" password="${sfAmar.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" retrieveTarget="D:\\Projects\\roundCorner\\rc_batch_processing_Amar" packageNames="${sf.pkgName}"/>
-    </target>
 	
 	<target name="retrievePackage">
       <!-- Retrieve the contents into another directory -->
       <sf:retrieve username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" retrieveTarget="Batch Upload Framework With Batch Classes1.0" packageNames="${sf.pkgName}"/>
-    </target>
-
-	<target name="delpoyPackagedToAmar">
-      <!-- Upload the contents of the "mypkg" package -->
-      <sf:deploy username="${sfAmar.username}" password="${sfAmar.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" deployRoot="retrieveUnpackagedES" rollbackOnError="false"/>
-    </target>
-	
-	<target name="delpoyPackagedToKirti">
-      <!-- Upload the contents of the "mypkg" package -->
-      <sf:deploy username="${sfKirti.username}" password="${sfKirti.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" deployRoot="src" rollbackOnError="true"/>
     </target>
 	
 	    <!-- Test out deploy and retrieve verbs for package 'mypkg' -->
@@ -93,19 +55,8 @@
       <sf:deploy username="${sfPackaging.username}" password="${sfPackaging.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" deployRoot="retrieveUnpackagedBUP" rollbackOnError="true"/>
     </target>
 	
-	<target name="retrieveUnpackagedCustomMetadata">
-      <!-- Retrieve the contents into another directory -->
-      <sf:retrieve username="${sfESSachin.username}" password="${sfESSachin.password}" sessionId="${sf.sessionId}" serverurl="${sfESSachin.serverurl}" maxPoll="${sf.maxPoll}" retrieveTarget="retrieveUnpackagedCustomMetadata" unpackaged="retrieveCustomMetadata/package.xml"/>
-    </target>
-	
 	<target name="deployUnpackagedCustomMetadata">
       <sf:deploy username="${sfPackaging.username}" password="${sfPackaging.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" deployRoot="retrieveUnpackagedCustomMetadata" rollbackOnError="true"/>
-    </target>
-	
-	<target name="retrieveUnpackagedES">
-      <mkdir dir="retrieveUnpackagedES"/>
-      <!-- Retrieve the contents into another directory -->
-      <sf:retrieve username="${sfESSachin.username}" password="${sfESSachin.password}" sessionId="${sf.sessionId}" serverurl="${sfESSachin.serverurl}" maxPoll="${sf.maxPoll}" retrieveTarget="retrieveUnpackagedES" unpackaged="unpackaged/package.xml"/>
     </target>
 	
     <!-- Retrieve an unpackaged set of metadata from your org -->
@@ -155,10 +106,7 @@
 	</target>
 	
     <!-- Shows removing code; only succeeds if done after deployCode -->
-    <target name="undeployCode">
-      <sf:deploy username="${sfAmar.username}" password="${sfAmar.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" deployRoot="removecodepkg"/>
-    </target>
-
+   
     <!-- Shows retrieving code; only succeeds if done after deployCode -->
     <target name="retrieveCode">
       <!-- Retrieve the contents listed in the file codepkg/package.xml into the codepkg directory -->

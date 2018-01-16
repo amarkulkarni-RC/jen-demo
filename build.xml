@@ -1,0 +1,198 @@
+<project name="Sample usage of Salesforce Ant tasks" default="test" basedir="." xmlns:sf="antlib:com.salesforce">
+
+    <property file="build.properties"/>
+    <property environment="env"/>
+
+    <!-- Setting default value for username, password and session id properties to empty string 
+         so unset values are treated as empty. Without this, ant expressions such as ${sf.username}
+         will be treated literally.
+    -->
+    <condition property="sf.username" value=""> <not> <isset property="sf.username"/> </not> </condition>
+    <condition property="sf.password" value=""> <not> <isset property="sf.password"/> </not> </condition>
+    <condition property="sf.sessionId" value=""> <not> <isset property="sf.sessionId"/> </not> </condition>
+
+    <taskdef resource="com/salesforce/antlib.xml" uri="antlib:com.salesforce">
+        <classpath>
+            <pathelement location="../ant-salesforce.jar" />        	
+        </classpath>
+    </taskdef>
+	
+	<!-- Start Event Picklist-->
+		<target name="deployPicklistEvent">
+		  <sf:deploy username="${sfPackaging.username}" password="${sfPackaging.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" deployRoot="D:\\Projects\\roundCorner\\deployPicklistEvent" rollbackOnError="true"/>
+		</target>
+	
+	<!-- End Event Picklist-->
+	
+    <!-- Test out deploy and retrieve verbs for package 'mypkg' -->
+    <target name="test">
+      <!-- Upload the contents of the "mypkg" package -->
+      <sf:deploy username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" deployRoot="mypkg" rollbackOnError="true"/>
+      <mkdir dir="retrieveOutput"/>
+      <!-- Retrieve the contents into another directory -->
+      <sf:retrieve username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" retrieveTarget="retrieveOutput" packageNames="MyPkg"/>
+    </target>
+	
+	<target name="retrieveUnpackagedBUP">
+      <mkdir dir="retrieveUnpackagedBUP"/>
+      <!-- Retrieve the contents into another directory -->
+      <sf:retrieve username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" retrieveTarget="retrieveUnpackagedBUP" unpackaged="src/package.xml"/>
+    </target>
+	
+	<target name="deployUnpackagedSachinBUP">
+      <sf:deploy username="${sfBUPSachin.username}" password="${sfBUPSachin.password}" sessionId="${sf.sessionId}" serverurl="${sfBUPSachin.serverurl}" maxPoll="${sf.maxPoll}" deployRoot="retrieveUnpackagedES" rollbackOnError="true"/>
+    </target>
+	
+	<target name="deployUnpackagedAmarBUP">
+      <sf:deploy username="${sfAmar.username}" password="${sfAmar.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" deployRoot="retrieveUnpackagedES" rollbackOnError="true"/>
+    </target>
+	
+	<target name="deployUnpackagedBUP">
+      <sf:deploy username="${sfES.username}" password="${sfES.password}" sessionId="${sf.sessionId}" serverurl="${sfESSachin.serverurl}" maxPoll="${sf.maxPoll}" deployRoot="retrieveUnpackagedBUP" rollbackOnError="true"/>
+    </target>
+	
+	
+	<target name="retrievePackageBUP">
+      <!-- Retrieve the contents into another directory -->
+      <sf:retrieve username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" retrieveTarget="src" packageNames="${sf.pkgName}"/>
+    </target>
+	
+	<target name="retrieveUnpackagedAmar">
+      <mkdir dir="retrieveUnpackagedAmar"/>
+      <!-- Retrieve the contents into another directory -->
+      <sf:retrieve username="${sfAmar.username}" password="${sfAmar.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" retrieveTarget="retrieveUnpackagedAmar" unpackaged="D:\\Projects\\roundCorner\\rc_batch_processing_Amar\\package.xml"/>
+    </target>
+	
+	<target name="retrievePackageAmar">
+      <!-- Retrieve the contents into another directory -->
+      <sf:retrieve username="${sfAmar.username}" password="${sfAmar.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" retrieveTarget="D:\\Projects\\roundCorner\\rc_batch_processing_Amar" packageNames="${sf.pkgName}"/>
+    </target>
+	
+	<target name="retrievePackage">
+      <!-- Retrieve the contents into another directory -->
+      <sf:retrieve username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" retrieveTarget="Batch Upload Framework With Batch Classes1.0" packageNames="${sf.pkgName}"/>
+    </target>
+
+	<target name="delpoyPackagedToAmar">
+      <!-- Upload the contents of the "mypkg" package -->
+      <sf:deploy username="${sfAmar.username}" password="${sfAmar.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" deployRoot="retrieveUnpackagedES" rollbackOnError="false"/>
+    </target>
+	
+	<target name="delpoyPackagedToKirti">
+      <!-- Upload the contents of the "mypkg" package -->
+      <sf:deploy username="${sfKirti.username}" password="${sfKirti.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" deployRoot="src" rollbackOnError="true"/>
+    </target>
+	
+	    <!-- Test out deploy and retrieve verbs for package 'mypkg' -->
+    <target name="delpoyPackaged">
+      <!-- Upload the contents of the "mypkg" package -->
+      <sf:deploy username="${sfPackaging.username}" password="${sfPackaging.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" deployRoot="Batch Upload Framework With Batch Classes1.0" rollbackOnError="true"/>
+    </target>
+
+	<target name="deployUnpackagedPackaging">
+      <sf:deploy username="${sfPackaging.username}" password="${sfPackaging.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" deployRoot="retrieveUnpackagedBUP" rollbackOnError="true"/>
+    </target>
+	
+	<target name="retrieveUnpackagedCustomMetadata">
+      <!-- Retrieve the contents into another directory -->
+      <sf:retrieve username="${sfESSachin.username}" password="${sfESSachin.password}" sessionId="${sf.sessionId}" serverurl="${sfESSachin.serverurl}" maxPoll="${sf.maxPoll}" retrieveTarget="retrieveUnpackagedCustomMetadata" unpackaged="retrieveCustomMetadata/package.xml"/>
+    </target>
+	
+	<target name="deployUnpackagedCustomMetadata">
+      <sf:deploy username="${sfPackaging.username}" password="${sfPackaging.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" deployRoot="retrieveUnpackagedCustomMetadata" rollbackOnError="true"/>
+    </target>
+	
+	<target name="retrieveUnpackagedES">
+      <mkdir dir="retrieveUnpackagedES"/>
+      <!-- Retrieve the contents into another directory -->
+      <sf:retrieve username="${sfESSachin.username}" password="${sfESSachin.password}" sessionId="${sf.sessionId}" serverurl="${sfESSachin.serverurl}" maxPoll="${sf.maxPoll}" retrieveTarget="retrieveUnpackagedES" unpackaged="unpackaged/package.xml"/>
+    </target>
+	
+    <!-- Retrieve an unpackaged set of metadata from your org -->
+    <!-- The file unpackaged/package.xml lists what is to be retrieved -->
+    <target name="retrieveUnpackaged">
+      <mkdir dir="retrieveUnpackaged"/>
+      <!-- Retrieve the contents into another directory -->
+      <sf:retrieve username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" retrieveTarget="retrieveUnpackaged" unpackaged="unpackaged/package.xml"/>
+    </target>
+
+    <!-- Retrieve all the items of a particular metadata type -->
+    <target name="bulkRetrieve">
+      <sf:bulkRetrieve username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" metadataType="${sf.metadataType}" retrieveTarget="retrieveUnpackaged"/>
+    </target>
+
+    <!-- Retrieve metadata for all the packages specified under packageNames -->
+    <target name="retrievePkg">
+      <sf:retrieve username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" retrieveTarget="retrieveOutput" packageNames="${sf.pkgName}"/>
+    </target>
+
+    <!-- Deploy the unpackaged set of metadata retrieved with retrieveUnpackaged and run tests in this organization's namespace only-->
+    <target name="deployUnpackaged">
+      <sf:deploy username="${sf1.username}" password="${sf1.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" deployRoot="retrieveUnpackaged" rollbackOnError="true"/>
+    </target>
+
+    <!-- Deploy a zip of metadata files to the org -->
+    <target name="deployZip">
+      <sf:deploy username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" zipFile="${sf.zipFile}" pollWaitMillis="1000" rollbackOnError="true"/>
+    </target>
+
+    <!-- Shows deploying code & running tests for code in directory -->
+    <target name="deployCode">
+      <!-- Upload the contents of the "codepkg" directory, running the tests for just 1 class -->
+      <sf:deploy username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" deployRoot="codepkg" testLevel="RunSpecifiedTests" rollbackOnError="true">
+      	 <runTest>SampleDeployClass</runTest> 
+      </sf:deploy>
+    </target>
+	
+	 <!-- Shows deploying code with no TestLevel sepcified -->
+    <target name="deployCodeNoTestLevelSpecified">
+      <sf:deploy username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" deployRoot="codepkg" rollbackOnError="true"/>
+    </target>
+	
+	<!-- Shows deploying code and running tests only within the org namespace -->
+	<target name="deployCodeRunLocalTests">
+	  <sf:deploy username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" deployRoot="codepkg" rollbackOnError="true"  testlevel="RunLocalTests"/>
+	</target>
+	
+    <!-- Shows removing code; only succeeds if done after deployCode -->
+    <target name="undeployCode">
+      <sf:deploy username="${sfAmar.username}" password="${sfAmar.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" deployRoot="removecodepkg"/>
+    </target>
+
+    <!-- Shows retrieving code; only succeeds if done after deployCode -->
+    <target name="retrieveCode">
+      <!-- Retrieve the contents listed in the file codepkg/package.xml into the codepkg directory -->
+      <sf:retrieve username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" retrieveTarget="codepkg" unpackaged="codepkg/package.xml"/>
+    </target>
+
+    <!-- Shows deploying code, running all tests, and running tests (1 of which fails), and logging. -->
+    <target name="deployCodeFailingTest">
+      <!-- Upload the contents of the "codepkg" package, running all tests -->
+      <sf:deploy username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" deployRoot="codepkg" testLevel="RunAllTestsInOrg" rollbackOnError="true" logType="Debugonly"/>
+    </target>
+
+    <!-- Shows check only; never actually saves to the server -->
+    <target name="deployCodeCheckOnly">
+      <sf:deploy username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" deployRoot="codepkg" checkOnly="true"/>
+    </target>
+	
+	<!-- Shows quick deployment of recent validation. Set the property sf.recentValidationId to your recent check only deployment Id -->
+	<target name="quickDeploy">
+	  <sf:deployRecentValidation  username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" recentValidationId="${sf.recentValidationId}"/>
+	</target>
+	
+	<!-- Shows cancel deployment of deploy request either pending or in progress. Set property sf.requestId to Id of pending or in progress deploy request -->
+	<target name="cancelDeploy">
+	  <sf:cancelDeploy  username="${sf.username}" password="${sf.password}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" requestId="${sf.requestId}"/>
+	</target>
+
+	<!-- Retrieve the information of all items of a particular metadata type -->
+    <target name="listMetadata">
+      <sf:listMetadata username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}" metadataType="${sf.metadataType}"/>
+    </target>
+
+	<!-- Retrieve the information on all supported metadata type -->
+    <target name="describeMetadata">
+      <sf:describeMetadata username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" serverurl="${sf.serverurl}"/>
+    </target>
+</project>
